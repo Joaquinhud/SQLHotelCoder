@@ -1,0 +1,99 @@
+CREATE DATABASE IF NOT EXISTS hotel;
+
+USE hotel;
+CREATE TABLE IF NOT EXISTS Nacionalidad(
+Nac_Id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+nacionalidad VARCHAR (20) NOT NULL);
+
+CREATE TABLE IF NOT EXISTS Documento(
+Docclass_Id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+Documento VARCHAR (20) NOT NULL);
+
+
+
+CREATE TABLE IF NOT EXISTS pasajeros(
+pasajero_id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+nombre VARCHAR (50) NOT NULL,
+doc_numero VARCHAR (20) NOT NULL,
+Telefono VARCHAR(20),
+direccion VARCHAR(50),
+Docclass_Id INT NOT NULL,
+Nac_Id INT NOT NULL,
+FOREIGN KEY (Nac_Id)
+		REFERENCES Nacionalidad(Nac_Id)
+		ON DELETE CASCADE
+        ON UPDATE CASCADE,
+FOREIGN KEY(Docclass_Id)
+		REFERENCES Documento(Docclass_Id)
+		ON DELETE CASCADE
+        ON UPDATE CASCADE);
+        
+CREATE TABLE IF NOT EXISTS Funciones(
+Funcion_Id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+Descripcion VARCHAR (20) NOT NULL);
+
+CREATE TABLE IF NOT EXISTS Sucursal(
+sucursal_Id VARCHAR (50) NOT NULL UNIQUE PRIMARY KEY,
+direccion VARCHAR (50) NOT NULL);
+
+CREATE TABLE IF NOT EXISTS Empleado(
+Empleado_id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+nombre VARCHAR (50) NOT NULL,
+direccion VARCHAR(50),
+Funcion_Id INT,
+sucursal_Id VARCHAR(10),
+FOREIGN KEY (Funcion_Id)
+			REFERENCES Funciones(Funcion_Id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
+FOREIGN KEY (sucursal_Id)
+			REFERENCES Sucursal(sucursal_Id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE);
+
+CREATE TABLE IF NOT EXISTS Habitacion(
+Habitacion_Id  INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+Nivel VARCHAR(1),
+cant_pasajeros INT,
+Disponible boolean,
+sucursal_Id VARCHAR(10) NOT NULL,
+FOREIGN KEY (sucursal_Id)
+			REFERENCES Sucursal(sucursal_Id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE);
+
+CREATE TABLE IF NOT EXISTS Reserva(
+N_Reserva INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+Fecha_reserva TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+Fecha_Inicio DATE NOT NULL,
+Fecha_Fin DATE NOT NULL,
+Precio DECIMAL (9,2) DEFAULT (0),
+Notas TEXT,
+pasajero_id INT NOT NULL,
+Habitacion_id INT NOT NULL,
+
+FOREIGN KEY (pasajero_id)
+			REFERENCES Pasajeros(pasajero_id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
+FOREIGN KEY (Habitacion_id)
+		REFERENCES Habitacion(Habitacion_Id)
+        ON DELETE CASCADE
+		ON UPDATE CASCADE);
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
